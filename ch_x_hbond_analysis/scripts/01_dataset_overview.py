@@ -10,16 +10,12 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 from plot_config import *
 
-# ---------------------------------------------------------------------------
 # Load data
-# ---------------------------------------------------------------------------
 
 df = pd.read_csv(DATA_PATH)
 n_total = len(df)
 
-# ---------------------------------------------------------------------------
 # Helper
-# ---------------------------------------------------------------------------
 
 def _fmt(n):
     """Format an integer with comma thousands separator."""
@@ -33,9 +29,7 @@ def _summary(series, name):
     return pd.DataFrame({"count": counts, "percentage": pct}).rename_axis(name).reset_index()
 
 
-# ---------------------------------------------------------------------------
 # 1. Compute summaries
-# ---------------------------------------------------------------------------
 
 halogen_summary      = _summary(df["halogen"],             "halogen")
 structure_summary    = _summary(df["structure_type"],      "structure_type")
@@ -49,9 +43,7 @@ xtab_hybrid = pd.crosstab(df["halogen"], df["donor_hybridisation"])
 hyb_order = [h for h in ("sp", "sp2", "sp3") if h in xtab_hybrid.columns]
 xtab_hybrid = xtab_hybrid[hyb_order]
 
-# ---------------------------------------------------------------------------
 # 2. Console summary
-# ---------------------------------------------------------------------------
 
 print("=" * 60)
 print("DATASET OVERVIEW")
@@ -78,9 +70,7 @@ print("\n--- Halogen × donor hybridisation ---")
 print(xtab_hybrid.to_string())
 print("=" * 60)
 
-# ---------------------------------------------------------------------------
 # 3. Save tables
-# ---------------------------------------------------------------------------
 
 save_table(halogen_summary,   "halogen_summary")
 save_table(structure_summary, "structure_type_summary")
@@ -88,9 +78,7 @@ save_table(hybrid_summary,    "hybridisation_summary")
 save_table(xtab_struct.reset_index(),  "halogen_by_structure")
 save_table(xtab_hybrid.reset_index(), "halogen_by_hybridisation")
 
-# ---------------------------------------------------------------------------
 # 4. Figures
-# ---------------------------------------------------------------------------
 
 # Shared label map for hybridisation
 hyb_labels = {"sp": "sp", "sp2": "sp²", "sp3": "sp³"}

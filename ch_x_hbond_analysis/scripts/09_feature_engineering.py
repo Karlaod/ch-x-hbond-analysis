@@ -14,15 +14,11 @@ from plot_config import *
 
 DATA_DIR = os.path.dirname(DATA_PATH)
 
-# ---------------------------------------------------------------------------
 # Load data
-# ---------------------------------------------------------------------------
 
 df = pd.read_csv(DATA_PATH)
 
-# ---------------------------------------------------------------------------
 # Feature matrix
-# ---------------------------------------------------------------------------
 
 NUMERIC_COLS     = ["h_x_distance", "c_h_x_angle"]
 CATEGORICAL_COLS = ["donor_hybridisation", "acceptor_hybridisation", "structure_type"]
@@ -35,9 +31,7 @@ X_encoded = pd.get_dummies(X_raw, columns=CATEGORICAL_COLS, drop_first=True)
 
 feature_names = list(X_encoded.columns)
 
-# ---------------------------------------------------------------------------
 # Target encoding — Cl = 0, Br = 1
-# ---------------------------------------------------------------------------
 
 le = LabelEncoder()
 y = le.fit_transform(df["halogen"])          # ['Br', 'Cl'] → sorted → Br=0, Cl=1
@@ -48,9 +42,7 @@ else:                                         # Br → 0, Cl → 1: flip
     y = 1 - y
     le.classes_ = le.classes_[::-1]
 
-# ---------------------------------------------------------------------------
 # Train / test split — stratified 80/20
-# ---------------------------------------------------------------------------
 
 X_train_enc, X_test_enc, y_train, y_test = train_test_split(
     X_encoded, y,
@@ -59,9 +51,7 @@ X_train_enc, X_test_enc, y_train, y_test = train_test_split(
     stratify=y,
 )
 
-# ---------------------------------------------------------------------------
 # Scale numerical features only
-# ---------------------------------------------------------------------------
 
 scaler = StandardScaler()
 
@@ -71,17 +61,13 @@ X_test  = X_test_enc.copy()
 X_train[NUMERIC_COLS] = scaler.fit_transform(X_train_enc[NUMERIC_COLS])
 X_test[NUMERIC_COLS]  = scaler.transform(X_test_enc[NUMERIC_COLS])
 
-# ---------------------------------------------------------------------------
 # Save model artefacts
-# ---------------------------------------------------------------------------
 
 ensure_dirs()
 joblib.dump(scaler, os.path.join(MODELS_PATH, "scaler.pkl"))
 joblib.dump(le,     os.path.join(MODELS_PATH, "label_encoder.pkl"))
 
-# ---------------------------------------------------------------------------
 # Save data splits as CSV
-# ---------------------------------------------------------------------------
 
 X_train.to_csv(os.path.join(DATA_DIR, "X_train.csv"), index=False)
 X_test.to_csv( os.path.join(DATA_DIR, "X_test.csv"),  index=False)
@@ -93,9 +79,7 @@ pd.DataFrame({"feature": feature_names}).to_csv(
     os.path.join(DATA_DIR, "feature_names.csv"), index=False
 )
 
-# ---------------------------------------------------------------------------
 # Console summary
-# ---------------------------------------------------------------------------
 
 n_total  = len(df)
 n_feat   = len(feature_names)

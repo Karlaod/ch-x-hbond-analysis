@@ -10,18 +10,14 @@ import matplotlib.ticker as mticker
 from scipy.stats import gaussian_kde
 from plot_config import *
 
-# ---------------------------------------------------------------------------
 # Load data
-# ---------------------------------------------------------------------------
 
 df = pd.read_csv(DATA_PATH)
 
 cl = df.loc[df["halogen"] == "Cl", "h_x_distance"].values
 br = df.loc[df["halogen"] == "Br", "h_x_distance"].values
 
-# ---------------------------------------------------------------------------
 # Summary statistics table
-# ---------------------------------------------------------------------------
 
 def _stats(arr, halogen):
     q1, q3 = np.percentile(arr, [25, 75])
@@ -41,9 +37,7 @@ def _stats(arr, halogen):
 stats_df = pd.DataFrame([_stats(cl, "Cl"), _stats(br, "Br")]).round(4)
 save_table(stats_df, "distance_summary_stats")
 
-# ---------------------------------------------------------------------------
 # Shared KDE evaluation helper
-# ---------------------------------------------------------------------------
 
 x_min  = df["h_x_distance"].min() - 0.05
 x_max  = df["h_x_distance"].max() + 0.05
@@ -97,9 +91,7 @@ plt.tight_layout()
 save_figure(fig, "02a_distance_kde_comparison")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (b) Normalised KDE comparison
-# ---------------------------------------------------------------------------
 
 fig = plt.figure(figsize=(10, 6))
 ax  = fig.add_subplot(111)
@@ -122,9 +114,7 @@ plt.tight_layout()
 save_figure(fig, "02b_distance_kde_normalised")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (c) Horizontal box plot
-# ---------------------------------------------------------------------------
 
 fig = plt.figure(figsize=(10, 4))
 ax  = fig.add_subplot(111)
@@ -161,9 +151,7 @@ plt.tight_layout()
 save_figure(fig, "02c_distance_boxplot")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (d) Vertical violin plot
-# ---------------------------------------------------------------------------
 
 fig = plt.figure(figsize=(8, 6))
 ax  = fig.add_subplot(111)

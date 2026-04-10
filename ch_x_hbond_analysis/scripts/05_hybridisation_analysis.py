@@ -13,18 +13,14 @@ import matplotlib.pyplot as plt
 from scipy.stats import gaussian_kde
 from plot_config import *
 
-# ---------------------------------------------------------------------------
 # Load data — all hybridisations included
-# ---------------------------------------------------------------------------
 
 df = pd.read_csv(DATA_PATH)
 
 HYB_LABELS = {"sp": "sp", "sp2": "sp²", "sp3": "sp³"}
 HYB_ORDER  = ["sp", "sp2", "sp3"]
 
-# ---------------------------------------------------------------------------
 # Summary statistics tables (all hybridisations)
-# ---------------------------------------------------------------------------
 
 def _group_stats(value_col):
     return (
@@ -47,18 +43,14 @@ angle_stats = _group_stats("c_h_x_angle")
 save_table(dist_stats,  "hybridisation_distance_stats")
 save_table(angle_stats, "hybridisation_angle_stats")
 
-# ---------------------------------------------------------------------------
 # Helper: look up a stat for a specific halogen × hybridisation
-# ---------------------------------------------------------------------------
 
 def _stat(stats_df, halogen, hyb, col):
     row = stats_df[(stats_df["halogen"] == halogen) &
                    (stats_df["donor_hybridisation"] == hyb)]
     return float(row[col].values[0]) if len(row) else np.nan
 
-# ---------------------------------------------------------------------------
 # Figure (a) & (b) — three KDE subplots (sp², sp³, sp rug)
-# ---------------------------------------------------------------------------
 
 def _kde_panel(axes, y_col, x_range, xlabel):
     """
@@ -129,9 +121,7 @@ plt.tight_layout()
 save_figure(fig, "05b_angle_by_hybridisation")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # Figure (c) & (d) — grouped bar chart: median ± IQR per hybridisation
-# ---------------------------------------------------------------------------
 
 def _median_bar(ax, stats_df, ylabel, title):
     """

@@ -14,18 +14,14 @@ PROJECT_CMAP = LinearSegmentedColormap.from_list(
     "project_blue", ["#FFFFFF", "#C8DDE5", "#A3C4D0", "#4A90A4", "#2D6073", "#1B3A4B"], N=256
 )
 
-# ---------------------------------------------------------------------------
 # Load data
-# ---------------------------------------------------------------------------
 
 df = pd.read_csv(DATA_PATH)
 
 cl = df[df["halogen"] == "Cl"][["h_x_distance", "c_h_x_angle"]].values
 br = df[df["halogen"] == "Br"][["h_x_distance", "c_h_x_angle"]].values
 
-# ---------------------------------------------------------------------------
 # Shared axis ranges (consistent across all panels)
-# ---------------------------------------------------------------------------
 
 x_lo = df["h_x_distance"].min() - 0.05
 x_hi = df["h_x_distance"].max() + 0.05
@@ -35,9 +31,7 @@ y_lo, y_hi = 100, 180
 xx, yy = np.mgrid[x_lo:x_hi:200j, y_lo:y_hi:200j]
 grid   = np.vstack([xx.ravel(), yy.ravel()])
 
-# ---------------------------------------------------------------------------
 # KDE evaluation helper
-# ---------------------------------------------------------------------------
 
 def _kde_values(data):
     """Return KDE density evaluated on the shared (xx, yy) grid."""
@@ -54,9 +48,7 @@ vmin = min(zz_cl.min(), zz_br.min())
 vmax = max(zz_cl.max(), zz_br.max())
 levels = np.linspace(vmin, vmax, 16)   # 15 intervals → 16 boundaries
 
-# ---------------------------------------------------------------------------
 # Helper: draw a single contour panel onto an existing Axes
-# ---------------------------------------------------------------------------
 
 def _draw_contour(ax, zz, title, colourbar_label="Density"):
     cf = ax.contourf(xx, yy, zz, levels=levels, cmap=PROJECT_CMAP)
@@ -84,9 +76,7 @@ def _draw_hexbin(ax, data, title):
     ax.set_title(title)
 
 
-# ---------------------------------------------------------------------------
 # (a) 2×2 panel
-# ---------------------------------------------------------------------------
 
 fig, axes = plt.subplots(2, 2, figsize=(16, 14))
 
@@ -110,9 +100,7 @@ plt.tight_layout()
 save_figure(fig, "04a_distance_vs_angle_panel")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (b) Cl contour — individual
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(8, 6))
 _draw_contour(ax, zz_cl, "C–H···Cl Distance vs Angle Density Contour")
@@ -120,9 +108,7 @@ plt.tight_layout()
 save_figure(fig, "04b_distance_vs_angle_contour_cl")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (c) Br contour — individual
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(8, 6))
 _draw_contour(ax, zz_br, "C–H···Br Distance vs Angle Density Contour")

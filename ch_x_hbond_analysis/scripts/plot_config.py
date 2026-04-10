@@ -9,9 +9,7 @@ and visualisation scripts in this project. Import at the top of each script:
 import os
 import matplotlib.pyplot as plt
 
-# ---------------------------------------------------------------------------
 # Paths
-# ---------------------------------------------------------------------------
 
 _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 _PROJECT_DIR = os.path.dirname(_SCRIPT_DIR)
@@ -28,9 +26,7 @@ def ensure_dirs():
         os.makedirs(path, exist_ok=True)
 
 
-# ---------------------------------------------------------------------------
 # Colour palettes
-# ---------------------------------------------------------------------------
 
 HALOGEN_COLOURS = {
     "Cl": "#1B3A4B",
@@ -57,9 +53,7 @@ CATEGORICAL_PALETTE = [
 # Single accent colour for single-category plots
 ACCENT_SLATE = "#1B3A4B"
 
-# ---------------------------------------------------------------------------
 # Matplotlib style
-# ---------------------------------------------------------------------------
 
 plt.rcParams.update({
     # Font
@@ -102,9 +96,7 @@ plt.rcParams.update({
     "savefig.facecolor":     "white",
 })
 
-# ---------------------------------------------------------------------------
 # Save helpers
-# ---------------------------------------------------------------------------
 
 def save_figure(fig, filename):
     """

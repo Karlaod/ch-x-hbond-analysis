@@ -29,9 +29,7 @@ PROJECT_CMAP = LinearSegmentedColormap.from_list(
 
 DATA_DIR = os.path.dirname(DATA_PATH)
 
-# ---------------------------------------------------------------------------
 # Load preprocessed data
-# ---------------------------------------------------------------------------
 
 X_train = pd.read_csv(os.path.join(DATA_DIR, "X_train.csv"))
 X_test  = pd.read_csv(os.path.join(DATA_DIR, "X_test.csv"))
@@ -40,9 +38,7 @@ y_test  = pd.read_csv(os.path.join(DATA_DIR, "y_test.csv")).squeeze()
 
 feature_names = pd.read_csv(os.path.join(DATA_DIR, "feature_names.csv"))["feature"].tolist()
 
-# ---------------------------------------------------------------------------
 # Sample weights — compensate for 85/15 class imbalance
-# ---------------------------------------------------------------------------
 
 n_train   = len(y_train)
 n_cl      = int((y_train == 0).sum())
@@ -52,9 +48,7 @@ weight_br = n_train / (2 * n_br)
 
 sample_weights = np.where(y_train == 0, weight_cl, weight_br)
 
-# ---------------------------------------------------------------------------
 # Train
-# ---------------------------------------------------------------------------
 
 print("Training GradientBoostingClassifier …")
 clf = GradientBoostingClassifier(
@@ -67,32 +61,24 @@ clf = GradientBoostingClassifier(
 clf.fit(X_train, y_train, sample_weight=sample_weights)
 print("Training complete.")
 
-# ---------------------------------------------------------------------------
 # Predict
-# ---------------------------------------------------------------------------
 
 y_pred      = clf.predict(X_test)
 y_prob      = clf.predict_proba(X_test)[:, 1]   # probability of Br (class 1)
 
-# ---------------------------------------------------------------------------
 # Metrics
-# ---------------------------------------------------------------------------
 
 acc     = accuracy_score(y_test, y_pred)
 roc_auc = roc_auc_score(y_test, y_prob)
 cm      = confusion_matrix(y_test, y_pred)
 report  = classification_report(y_test, y_pred, target_names=["Cl", "Br"], output_dict=True)
 
-# ---------------------------------------------------------------------------
 # Save model
-# ---------------------------------------------------------------------------
 
 ensure_dirs()
 joblib.dump(clf, os.path.join(MODELS_PATH, "full_feature_model.pkl"))
 
-# ---------------------------------------------------------------------------
 # Save tables
-# ---------------------------------------------------------------------------
 
 report_df = pd.DataFrame(report).T.reset_index().rename(columns={"index": "class"})
 save_table(report_df, "baseline_classification_report")
@@ -102,9 +88,7 @@ cm_df = pd.DataFrame(cm, index=["Actual Cl", "Actual Br"],
 save_table(cm_df.reset_index().rename(columns={"index": ""}),
            "baseline_confusion_matrix")
 
-# ---------------------------------------------------------------------------
 # (a) Confusion matrix heatmap
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(7, 6))
 sns.heatmap(
@@ -128,9 +112,7 @@ plt.tight_layout()
 save_figure(fig, "10a_confusion_matrix_baseline")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (b) ROC curve
-# ---------------------------------------------------------------------------
 
 fpr, tpr, _ = roc_curve(y_test, y_prob)
 
@@ -153,9 +135,7 @@ plt.tight_layout()
 save_figure(fig, "10b_roc_curve_baseline")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # Console summary
-# ---------------------------------------------------------------------------
 
 print()
 print("=" * 60)

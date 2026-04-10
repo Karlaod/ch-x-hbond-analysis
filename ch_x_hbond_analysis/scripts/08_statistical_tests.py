@@ -12,18 +12,14 @@ import pandas as pd
 from scipy.stats import mannwhitneyu, ks_2samp
 from plot_config import *
 
-# ---------------------------------------------------------------------------
 # Load data
-# ---------------------------------------------------------------------------
 
 df = pd.read_csv(DATA_PATH)
 
 cl = df[df["halogen"] == "Cl"]
 br = df[df["halogen"] == "Br"]
 
-# ---------------------------------------------------------------------------
 # Helpers
-# ---------------------------------------------------------------------------
 
 def cohens_d(a, b):
     """Pooled Cohen's d."""
@@ -74,16 +70,12 @@ def _mw_ks_d(comparison, a, b):
     _record(comparison, "Cohen's d", d, 1.0, effect_size=d)
 
 
-# ---------------------------------------------------------------------------
 # 1 & 2. Cl vs Br — distance and angle
-# ---------------------------------------------------------------------------
 
 _mw_ks_d("Cl vs Br | H···X Distance",   cl["h_x_distance"].values, br["h_x_distance"].values)
 _mw_ks_d("Cl vs Br | C–H···X Angle",    cl["c_h_x_angle"].values,  br["c_h_x_angle"].values)
 
-# ---------------------------------------------------------------------------
 # 3 & 4. Within each halogen — Organic vs Organometallic
-# ---------------------------------------------------------------------------
 
 for hal, subset in [("Cl", cl), ("Br", br)]:
     org  = subset[subset["structure_type"] == "organic"]
@@ -91,9 +83,7 @@ for hal, subset in [("Cl", cl), ("Br", br)]:
     _mw(f"{hal} | Organic vs Organometallic | Distance", org["h_x_distance"].values, omx["h_x_distance"].values)
     _mw(f"{hal} | Organic vs Organometallic | Angle",    org["c_h_x_angle"].values,  omx["c_h_x_angle"].values)
 
-# ---------------------------------------------------------------------------
 # 5 & 6. Within each halogen — sp² vs sp³
-# ---------------------------------------------------------------------------
 
 for hal, subset in [("Cl", cl), ("Br", br)]:
     sp2 = subset[subset["donor_hybridisation"] == "sp2"]
@@ -101,15 +91,11 @@ for hal, subset in [("Cl", cl), ("Br", br)]:
     _mw(f"{hal} | sp² vs sp³ | Distance", sp2["h_x_distance"].values, sp3["h_x_distance"].values)
     _mw(f"{hal} | sp² vs sp³ | Angle",    sp2["c_h_x_angle"].values,  sp3["c_h_x_angle"].values)
 
-# ---------------------------------------------------------------------------
 # Compile results
-# ---------------------------------------------------------------------------
 
 results_df = pd.DataFrame(results)
 
-# ---------------------------------------------------------------------------
 # Console output
-# ---------------------------------------------------------------------------
 
 print("=" * 72)
 print("STATISTICAL TESTS — C–H···X INTERACTION GEOMETRY")
@@ -131,9 +117,7 @@ for _, row in results_df.iterrows():
 print()
 print("=" * 72)
 
-# ---------------------------------------------------------------------------
 # Save tables
-# ---------------------------------------------------------------------------
 
 save_table(results_df, "statistical_tests_summary")
 

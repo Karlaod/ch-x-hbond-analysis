@@ -23,9 +23,7 @@ def _place(ax, filename, title):
     ax.axis("off")
 
 
-# ---------------------------------------------------------------------------
 # (a) ML Summary Panel — 2×2
-# ---------------------------------------------------------------------------
 
 fig, axes = plt.subplots(2, 2, figsize=(20, 10))
 
@@ -39,9 +37,7 @@ plt.tight_layout(pad=2.0)
 save_figure(fig, "13a_ml_summary_panel")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (b) Feature Importance Panel — 2×3
-# ---------------------------------------------------------------------------
 
 fig, axes = plt.subplots(2, 3, figsize=(20, 14))
 
@@ -57,9 +53,7 @@ plt.tight_layout(pad=2.0)
 save_figure(fig, "13b_feature_importance_panel")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (c) Model Comparison Bar Chart — created fresh
-# ---------------------------------------------------------------------------
 
 comparison = pd.read_csv(
     os.path.join(os.path.dirname(RESULTS_TABLES), "tables", "model_comparison.csv")

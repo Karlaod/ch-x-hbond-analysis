@@ -14,9 +14,7 @@ from plot_config import *
 
 DATA_DIR = os.path.dirname(DATA_PATH)
 
-# ---------------------------------------------------------------------------
 # Feature display-name map
-# ---------------------------------------------------------------------------
 
 DISPLAY_NAMES = {
     "h_x_distance":                    "H···X Distance",
@@ -31,9 +29,7 @@ DISPLAY_NAMES = {
 def display(name):
     return DISPLAY_NAMES.get(name, name.replace("_", " ").capitalize())
 
-# ---------------------------------------------------------------------------
 # Load data and models
-# ---------------------------------------------------------------------------
 
 X_train = pd.read_csv(os.path.join(DATA_DIR, "X_train.csv"))
 X_test  = pd.read_csv(os.path.join(DATA_DIR, "X_test.csv"))
@@ -45,9 +41,7 @@ clf_abl  = joblib.load(os.path.join(MODELS_PATH, "no_distance_model.pkl"))
 
 X_test_abl = X_test.drop(columns=["h_x_distance"])
 
-# ---------------------------------------------------------------------------
 # Permutation importance helpers
-# ---------------------------------------------------------------------------
 
 def _perm_importance(clf, X, y, label):
     print(f"Permutation importance — {label} …")
@@ -71,9 +65,7 @@ def _perm_importance(clf, X, y, label):
 perm_full = _perm_importance(clf_full, X_test,     y_test, "Full Model")
 perm_abl  = _perm_importance(clf_abl,  X_test_abl, y_test, "No Distance Model")
 
-# ---------------------------------------------------------------------------
 # SHAP values
-# ---------------------------------------------------------------------------
 
 RNG = np.random.default_rng(42)
 
@@ -101,9 +93,7 @@ shap_full_df, shap_full_vals, X_full_sample = _shap_values(clf_full, X_test,    
 shap_abl_df,  shap_abl_vals,  X_abl_sample  = _shap_values(clf_abl,  X_test_abl, "No Distance Model")
 print()
 
-# ---------------------------------------------------------------------------
 # Save tables
-# ---------------------------------------------------------------------------
 
 ensure_dirs()
 
@@ -116,9 +106,7 @@ save_table(shap_full_df[["feature","mean_abs_shap","rank"]],
 save_table(shap_abl_df[["feature","mean_abs_shap","rank"]],
            "shap_mean_abs_ablation")
 
-# ---------------------------------------------------------------------------
 # Figure helpers
-# ---------------------------------------------------------------------------
 
 def _horiz_bar(ax, features, values, errors, xlabel, title, colour=ACCENT_SLATE):
     """Horizontal ranked bar chart, most important at top."""
@@ -135,9 +123,7 @@ def _horiz_bar(ax, features, values, errors, xlabel, title, colour=ACCENT_SLATE)
     ax.set_axisbelow(True)
 
 
-# ---------------------------------------------------------------------------
 # (a) Permutation importance — Full Model
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(8, 5))
 _horiz_bar(ax,
@@ -150,9 +136,7 @@ plt.tight_layout()
 save_figure(fig, "12a_permutation_importance_full")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (b) Permutation importance — No Distance Model
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(8, 5))
 _horiz_bar(ax,
@@ -165,9 +149,7 @@ plt.tight_layout()
 save_figure(fig, "12b_permutation_importance_ablation")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (c) SHAP importance — Full Model (manual bar chart)
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(10, 6))
 _horiz_bar(ax,
@@ -180,9 +162,7 @@ plt.tight_layout()
 save_figure(fig, "12c_shap_importance_full")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (d) SHAP importance — No Distance Model
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(10, 6))
 _horiz_bar(ax,
@@ -195,9 +175,7 @@ plt.tight_layout()
 save_figure(fig, "12d_shap_importance_ablation")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (e) SHAP beeswarm — Full Model
-# ---------------------------------------------------------------------------
 
 # Rename columns to display names for the plot
 X_full_display = X_full_sample.rename(columns=DISPLAY_NAMES)
@@ -209,9 +187,7 @@ plt.tight_layout()
 save_figure(fig, "12e_shap_beeswarm_full")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (f) Side-by-side permutation importance panel
-# ---------------------------------------------------------------------------
 
 x_max = max(
     (perm_full["importance_mean"] + perm_full["importance_std"]).max(),
@@ -242,9 +218,7 @@ plt.tight_layout()
 save_figure(fig, "12f_importance_comparison_panel")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # Console summary
-# ---------------------------------------------------------------------------
 
 print("=" * 60)
 print("FEATURE IMPORTANCE SUMMARY")

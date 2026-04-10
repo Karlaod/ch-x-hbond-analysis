@@ -30,18 +30,14 @@ PROJECT_CMAP = LinearSegmentedColormap.from_list(
 
 DATA_DIR = os.path.dirname(DATA_PATH)
 
-# ---------------------------------------------------------------------------
 # Load preprocessed data
-# ---------------------------------------------------------------------------
 
 X_train_full = pd.read_csv(os.path.join(DATA_DIR, "X_train.csv"))
 X_test_full  = pd.read_csv(os.path.join(DATA_DIR, "X_test.csv"))
 y_train      = pd.read_csv(os.path.join(DATA_DIR, "y_train.csv")).squeeze()
 y_test       = pd.read_csv(os.path.join(DATA_DIR, "y_test.csv")).squeeze()
 
-# ---------------------------------------------------------------------------
 # Drop h_x_distance
-# ---------------------------------------------------------------------------
 
 DROP_COL = "h_x_distance"
 X_train  = X_train_full.drop(columns=[DROP_COL])
@@ -53,9 +49,7 @@ for f in X_train.columns:
     print(f"  {f}")
 print()
 
-# ---------------------------------------------------------------------------
 # Sample weights — identical to script 10
-# ---------------------------------------------------------------------------
 
 n_train   = len(y_train)
 n_cl      = int((y_train == 0).sum())
@@ -64,9 +58,7 @@ weight_cl = n_train / (2 * n_cl)
 weight_br = n_train / (2 * n_br)
 sample_weights = np.where(y_train == 0, weight_cl, weight_br)
 
-# ---------------------------------------------------------------------------
 # Train ablation model
-# ---------------------------------------------------------------------------
 
 print("Training ablation GradientBoostingClassifier (no distance) …")
 clf_ablation = GradientBoostingClassifier(
@@ -79,24 +71,18 @@ clf_ablation = GradientBoostingClassifier(
 clf_ablation.fit(X_train, y_train, sample_weight=sample_weights)
 print("Training complete.")
 
-# ---------------------------------------------------------------------------
 # Ablation predictions
-# ---------------------------------------------------------------------------
 
 y_pred_abl  = clf_ablation.predict(X_test)
 y_prob_abl  = clf_ablation.predict_proba(X_test)[:, 1]
 
-# ---------------------------------------------------------------------------
 # Full model predictions (for ROC comparison)
-# ---------------------------------------------------------------------------
 
 clf_full   = joblib.load(os.path.join(MODELS_PATH, "full_feature_model.pkl"))
 y_prob_full = clf_full.predict_proba(X_test_full)[:, 1]
 y_pred_full = clf_full.predict(X_test_full)
 
-# ---------------------------------------------------------------------------
 # Metrics — ablation
-# ---------------------------------------------------------------------------
 
 acc_abl     = accuracy_score(y_test, y_pred_abl)
 auc_abl     = roc_auc_score(y_test, y_prob_abl)
@@ -110,16 +96,12 @@ auc_full    = roc_auc_score(y_test, y_prob_full)
 report_full = classification_report(y_test, y_pred_full, target_names=["Cl", "Br"],
                                     output_dict=True)
 
-# ---------------------------------------------------------------------------
 # Save model
-# ---------------------------------------------------------------------------
 
 ensure_dirs()
 joblib.dump(clf_ablation, os.path.join(MODELS_PATH, "no_distance_model.pkl"))
 
-# ---------------------------------------------------------------------------
 # Save tables
-# ---------------------------------------------------------------------------
 
 report_df = pd.DataFrame(report_abl).T.reset_index().rename(columns={"index": "class"})
 save_table(report_df, "ablation_classification_report")
@@ -154,9 +136,7 @@ comparison_df = pd.DataFrame({
 })
 save_table(comparison_df, "model_comparison")
 
-# ---------------------------------------------------------------------------
 # (a) Confusion matrix — ablation
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(7, 6))
 sns.heatmap(
@@ -180,9 +160,7 @@ plt.tight_layout()
 save_figure(fig, "11a_confusion_matrix_ablation")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (b) ROC curve comparison
-# ---------------------------------------------------------------------------
 
 fpr_full, tpr_full, _ = roc_curve(y_test, y_prob_full)
 fpr_abl,  tpr_abl,  _ = roc_curve(y_test, y_prob_abl)
@@ -212,9 +190,7 @@ plt.tight_layout()
 save_figure(fig, "11b_roc_comparison")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (c) Metric comparison bar chart
-# ---------------------------------------------------------------------------
 
 bar_metrics = ["Accuracy", "Precision (Br)", "Recall (Br)", "F1 (Br)", "ROC AUC"]
 idx_map     = {m: i for i, m in enumerate(metrics)}
@@ -256,9 +232,7 @@ plt.tight_layout()
 save_figure(fig, "11c_model_comparison")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # Console summary
-# ---------------------------------------------------------------------------
 
 print()
 print("=" * 65)

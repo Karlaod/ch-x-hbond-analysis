@@ -10,18 +10,14 @@ import matplotlib.pyplot as plt
 from scipy.stats import gaussian_kde
 from plot_config import *
 
-# ---------------------------------------------------------------------------
 # Load data
-# ---------------------------------------------------------------------------
 
 df = pd.read_csv(DATA_PATH)
 
 STRUCT_ORDER  = ["organic", "organometallic"]
 STRUCT_LABELS = {"organic": "Organic", "organometallic": "Organometallic"}
 
-# ---------------------------------------------------------------------------
 # Summary statistics table
-# ---------------------------------------------------------------------------
 
 stats = (
     df.groupby(["halogen", "structure_type"])
@@ -39,9 +35,7 @@ stats = (
 )
 save_table(stats, "structure_type_comparison_stats")
 
-# ---------------------------------------------------------------------------
 # Helpers
-# ---------------------------------------------------------------------------
 
 def _stat(halogen, struct, col):
     row = stats[(stats["halogen"] == halogen) & (stats["structure_type"] == struct)]
@@ -144,9 +138,7 @@ def _draw_donut(ax, labels, counts, colours, total_label):
             fontsize=9, color="#555555")
     ax.axis("off")
 
-# ---------------------------------------------------------------------------
 # (a) Distance KDE — two subplots (Cl, Br)
-# ---------------------------------------------------------------------------
 
 fig, (ax_cl, ax_br) = plt.subplots(1, 2, figsize=(14, 6))
 _kde_subplot(ax_cl, "Cl", "h_x_distance", (2.2, 3.6), "H···X Distance (Å)")
@@ -162,9 +154,7 @@ plt.tight_layout()
 save_figure(fig, "06a_distance_by_structure_type")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (b) Angle KDE — two subplots (Cl, Br)
-# ---------------------------------------------------------------------------
 
 fig, (ax_cl, ax_br) = plt.subplots(1, 2, figsize=(14, 6))
 _kde_subplot(ax_cl, "Cl", "c_h_x_angle", (100, 180), "C–H···X Angle (°)")
@@ -180,9 +170,7 @@ plt.tight_layout()
 save_figure(fig, "06b_angle_by_structure_type")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (c) Median distance bar chart
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(8, 5))
 _median_bar(ax, "h_x_distance", "median_distance",
@@ -197,9 +185,7 @@ plt.tight_layout()
 save_figure(fig, "06c_median_distance_by_structure")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (d) Median angle bar chart
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(8, 5))
 _median_bar(ax, "c_h_x_angle", "median_angle",
@@ -213,9 +199,7 @@ plt.tight_layout()
 save_figure(fig, "06d_median_angle_by_structure")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (e) Halogen proportion donuts — one per structure type
-# ---------------------------------------------------------------------------
 
 fig, (ax_org, ax_omx) = plt.subplots(1, 2, figsize=(10, 5))
 

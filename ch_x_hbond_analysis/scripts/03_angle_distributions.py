@@ -9,18 +9,14 @@ import matplotlib.pyplot as plt
 from scipy.stats import gaussian_kde
 from plot_config import *
 
-# ---------------------------------------------------------------------------
 # Load data
-# ---------------------------------------------------------------------------
 
 df = pd.read_csv(DATA_PATH)
 
 cl = df.loc[df["halogen"] == "Cl", "c_h_x_angle"].values
 br = df.loc[df["halogen"] == "Br", "c_h_x_angle"].values
 
-# ---------------------------------------------------------------------------
 # Summary statistics table
-# ---------------------------------------------------------------------------
 
 def _stats(arr, halogen):
     q1, q3 = np.percentile(arr, [25, 75])
@@ -40,9 +36,7 @@ def _stats(arr, halogen):
 stats_df = pd.DataFrame([_stats(cl, "Cl"), _stats(br, "Br")]).round(4)
 save_table(stats_df, "angle_summary_stats")
 
-# ---------------------------------------------------------------------------
 # (a) KDE comparison — frequency y-axis, median lines, text box
-# ---------------------------------------------------------------------------
 
 x_range = np.linspace(100, 180, 1000)
 
@@ -76,9 +70,7 @@ plt.tight_layout()
 save_figure(fig, "03a_angle_kde_comparison")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (b) Normalised KDE — probability density, shape comparison
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -99,9 +91,7 @@ plt.tight_layout()
 save_figure(fig, "03b_angle_kde_normalised")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (c) Horizontal box plot
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(10, 4))
 
@@ -136,9 +126,7 @@ plt.tight_layout()
 save_figure(fig, "03c_angle_boxplot")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (d) Vertical violin plot
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(8, 6))
 

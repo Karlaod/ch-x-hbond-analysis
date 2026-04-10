@@ -17,18 +17,14 @@ PROJECT_CMAP = LinearSegmentedColormap.from_list(
     N=256,
 )
 
-# ---------------------------------------------------------------------------
 # Load data
-# ---------------------------------------------------------------------------
 
 df = pd.read_csv(DATA_PATH)
 
 HYB_ORDER  = ["sp", "sp2", "sp3"]
 HYB_LABELS = {"sp": "sp", "sp2": "sp²", "sp3": "sp³"}
 
-# ---------------------------------------------------------------------------
 # Build pivot tables
-# ---------------------------------------------------------------------------
 
 def _pivot_count(halogen):
     sub = df[df["halogen"] == halogen]
@@ -55,18 +51,14 @@ count_br  = _pivot_count("Br")
 median_cl = _pivot_median("Cl")
 median_br = _pivot_median("Br")
 
-# ---------------------------------------------------------------------------
 # Save tables (raw labels for data integrity)
-# ---------------------------------------------------------------------------
 
 save_table(count_cl.reset_index(),  "pair_counts_cl")
 save_table(count_br.reset_index(),  "pair_counts_br")
 save_table(median_cl.reset_index(), "pair_median_distance_cl")
 save_table(median_br.reset_index(), "pair_median_distance_br")
 
-# ---------------------------------------------------------------------------
 # Helpers
-# ---------------------------------------------------------------------------
 
 def _relabel(pivot):
     """Rename sp/sp2/sp3 → display labels (sp, sp², sp³) for both axes."""
@@ -109,9 +101,7 @@ def _heatmap_median(ax, pivot, title):
     ax.tick_params(axis="y", rotation=0)
 
 
-# ---------------------------------------------------------------------------
 # (a) Count heatmap — Cl
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(8, 6))
 _heatmap_count(ax, count_cl, "C–H···Cl Contact Counts by Hybridisation Pair")
@@ -119,9 +109,7 @@ plt.tight_layout()
 save_figure(fig, "07a_pair_count_heatmap_cl")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (b) Count heatmap — Br
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(8, 6))
 _heatmap_count(ax, count_br, "C–H···Br Contact Counts by Hybridisation Pair")
@@ -129,9 +117,7 @@ plt.tight_layout()
 save_figure(fig, "07b_pair_count_heatmap_br")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (c) Median distance heatmap — Cl
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(8, 6))
 _heatmap_median(ax, median_cl, "Median H···Cl Distance by Hybridisation Pair (Å)")
@@ -139,9 +125,7 @@ plt.tight_layout()
 save_figure(fig, "07c_pair_median_distance_cl")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (d) Median distance heatmap — Br
-# ---------------------------------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(8, 6))
 _heatmap_median(ax, median_br, "Median H···Br Distance by Hybridisation Pair (Å)")
@@ -149,9 +133,7 @@ plt.tight_layout()
 save_figure(fig, "07d_pair_median_distance_br")
 plt.close(fig)
 
-# ---------------------------------------------------------------------------
 # (e) 2×2 panel
-# ---------------------------------------------------------------------------
 
 fig, axes = plt.subplots(2, 2, figsize=(16, 12))
 
