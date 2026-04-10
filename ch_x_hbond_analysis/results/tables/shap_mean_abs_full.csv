@@ -1,0 +1,8 @@
+feature,mean_abs_shap,rank
+structure_type_organometallic,0.6003717274594603,1
+h_x_distance,0.4914767364097202,2
+c_h_x_angle,0.28093383675576683,3
+acceptor_hybridisation_sp3,0.1677398843415791,4
+acceptor_hybridisation_sp2,0.012961012219149137,5
+donor_hybridisation_sp3,0.009429052646490401,6
+donor_hybridisation_sp2,0.0020634309178640003,7

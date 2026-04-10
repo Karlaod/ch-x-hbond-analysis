@@ -1,0 +1,9 @@
+Metric,Full Model,No Distance,Difference
+Accuracy,0.727,0.6453,-0.0817
+Precision (Cl),0.9346,0.9268,-0.0078
+Recall (Cl),0.7297,0.6325,-0.0972
+F1 (Cl),0.8196,0.7519,-0.0677
+Precision (Br),0.3176,0.2567,-0.0609
+Recall (Br),0.7115,0.7176,0.0062
+F1 (Br),0.4392,0.3781,-0.061
+ROC AUC,0.7907,0.7206,-0.0701

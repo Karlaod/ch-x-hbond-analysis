@@ -1,0 +1,7 @@
+comparison,test,statistic,p_value,effect_size,significance
+Cl vs Br | H···X Distance,Mann-Whitney U,5606159814.5,8.31448394772149e-42,,***
+Cl vs Br | H···X Distance,KS two-sample,0.1004,0.0,,***
+Cl vs Br | H···X Distance,Cohen's d,0.0788,1.0,0.0788,ns
+Cl vs Br | C–H···X Angle,Mann-Whitney U,6368903334.5,0.0,,***
+Cl vs Br | C–H···X Angle,KS two-sample,0.1609,0.0,,***
+Cl vs Br | C–H···X Angle,Cohen's d,0.2892,1.0,0.2892,ns

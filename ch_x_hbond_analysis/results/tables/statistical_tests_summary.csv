@@ -1,0 +1,15 @@
+comparison,test,statistic,p_value,effect_size,significance
+Cl vs Br | H···X Distance,Mann-Whitney U,5606159814.5,8.31448394772149e-42,,***
+Cl vs Br | H···X Distance,KS two-sample,0.1004,0.0,,***
+Cl vs Br | H···X Distance,Cohen's d,0.0788,1.0,0.0788,ns
+Cl vs Br | C–H···X Angle,Mann-Whitney U,6368903334.5,0.0,,***
+Cl vs Br | C–H···X Angle,KS two-sample,0.1609,0.0,,***
+Cl vs Br | C–H···X Angle,Cohen's d,0.2892,1.0,0.2892,ns
+Cl | Organic vs Organometallic | Distance,Mann-Whitney U,5996618069.0,0.0,,***
+Cl | Organic vs Organometallic | Angle,Mann-Whitney U,6255077281.0,1.8093003161230917e-238,,***
+Br | Organic vs Organometallic | Distance,Mann-Whitney U,178458045.5,9.027440122281946e-188,,***
+Br | Organic vs Organometallic | Angle,Mann-Whitney U,181243235.0,1.5081180983139568e-160,,***
+Cl | sp² vs sp³ | Distance,Mann-Whitney U,940903182.0,4.192019377888817e-142,,***
+Cl | sp² vs sp³ | Angle,Mann-Whitney U,1006383432.5,1.4807849460973256e-55,,***
+Br | sp² vs sp³ | Distance,Mann-Whitney U,29490739.5,1.3904586691120864e-32,,***
+Br | sp² vs sp³ | Angle,Mann-Whitney U,29925784.0,2.7115085110964174e-28,,***
