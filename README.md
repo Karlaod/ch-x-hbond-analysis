@@ -1,4 +1,4 @@
-# Data Mining Molecular Crystal Structures to Identify and Classify Geometric Patterns in C–H···Cl and C–H···Br Interactions
+# Data Mining and Machine Learning Analysis of Crystal Structures to Identify and Classify Geometric Patterns in C–H···Cl and C–H···Br Interactions 
 
 ## Overview
 Large-scale crystallographic data mining of the Cambridge Structural Database (CSD) to analyse weak hydrogen bonding interactions of the type C–H···X–C (X = Cl, Br). The project combines descriptive statistical analysis with supervised machine learning to characterise how chlorine and bromine function as weak hydrogen bond acceptors in molecular crystal structures.
